@@ -1,3 +1,4 @@
 .idea/
+__pycache__/
 cert.pem
 config.py
