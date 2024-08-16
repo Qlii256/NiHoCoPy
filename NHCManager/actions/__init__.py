@@ -2,3 +2,9 @@ from .action import Action
 from .dimmer_action import DimmerAction
 from .light_action import LightAction
 from .motor_action import MotorAction
+from .time_schedule_action import TimeScheduleAction
+from .condition_action import ConditionAction
+from .generic_action import GenericAction
+from .simulation_action import SimulationAction
+from .all_off_action import AllOffAction
+from .switched_generic_action import SwitchedGenericAction

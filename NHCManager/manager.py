@@ -61,6 +61,42 @@ class Manager:
                             uuid=device['Uuid'],
                             name=device['Name'],
                             properties=device['Properties'])
+                    case 'switched-generic':
+                        action = SwitchedGenericAction(
+                            manager=self,
+                            uuid=device['Uuid'],
+                            name=device['Name'],
+                            properties=device['Properties'])
+                    case 'timeschedule':
+                        action = TimeScheduleAction(
+                            manager=self,
+                            uuid=device['Uuid'],
+                            name=device['Name'],
+                            properties=device['Properties'])
+                    case 'condition':
+                        action = ConditionAction(
+                            manager=self,
+                            uuid=device['Uuid'],
+                            name=device['Name'],
+                            properties=device['Properties'])
+                    case 'generic':
+                        action = GenericAction(
+                            manager=self,
+                            uuid=device['Uuid'],
+                            name=device['Name'],
+                            properties=device['Properties'])
+                    case 'simulation':
+                        action = SimulationAction(
+                            manager=self,
+                            uuid=device['Uuid'],
+                            name=device['Name'],
+                            properties=device['Properties'])
+                    case 'alloff':
+                        action = AllOffAction(
+                            manager=self,
+                            uuid=device['Uuid'],
+                            name=device['Name'],
+                            properties=device['Properties'])
 
                 if action:
                     actions.append(action)
