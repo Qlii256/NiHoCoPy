@@ -55,9 +55,12 @@ class Manager:
                             uuid=device['Uuid'],
                             name=device['Name'],
                             properties=device['Properties'])
-                    # case _:
-                    #     continue
-                    #     print(f'Device type \'{device["Model"]}\' cannot be recognized.')
+                    case 'light':
+                        action = LightAction(
+                            manager=self,
+                            uuid=device['Uuid'],
+                            name=device['Name'],
+                            properties=device['Properties'])
 
                 if action:
                     actions.append(action)
@@ -137,27 +140,28 @@ class Manager:
 
     def _process_event(self, data):
         if data['Method'] == 'devices.status':
-            uuid = data['Params'][0]['Devices'][0]['Uuid']
+            for device_status in data['Params'][0]['Devices']:
+                uuid = device_status['Uuid']
 
-            online = data['Params'][0]['Devices'][0].get('Online')
-            properties = data['Params'][0]['Devices'][0].get('Properties')
+                online = device_status.get('Online')
+                properties = device_status.get('Properties')
 
-            # If properties are given, it's possible we are dealing with an action.
-            if properties:
-                for action in self.actions:
-                    if action.uuid == uuid:
-                        action.process_properties(properties)
-                        return
+                # If properties are given, it's possible we are dealing with an action.
+                if properties:
+                    for action in self.actions:
+                        if action.uuid == uuid:
+                            action.process_properties(properties)
+                            return
 
-            for device in self.devices:
-                if device.uuid == uuid:
-                    if online:
-                        device.online = True if online == 'True' else False
-                        print(f'Set online to {device.online} for {device.name}')
-                    device.process_properties(properties)
-                    break
-            # else:
-            #     raise ValueError(data)
+                for device in self.devices:
+                    if device.uuid == uuid:
+                        if online:
+                            device.online = True if online == 'True' else False
+                            print(f'Set online to {device.online} for {device.name}')
+                        device.process_properties(properties)
+                        break
+                else:
+                    print(device_status)
 
     def on_message(self, topic: str, data: dict):
         pass
