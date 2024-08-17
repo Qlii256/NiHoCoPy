@@ -23,4 +23,6 @@ class TimeScheduleAction(Action):
             for key, value in property.items():
                 match key:
                     case 'Active':
-                        self._status = True if value == 'True' else False
+                        self._status = True if value.lower() == 'true' else False
+
+                self._process_property_callback(key, value)

@@ -64,8 +64,8 @@ class DimmerAction(Action):
             for key, value in property.items():
                 match key:
                     case 'Status':
-                        self._status = True if value == 'On' else False
+                        self._status = True if value.lower() == 'on' else False
                     case 'Brightness':
                         self._brightness = int(value)
-                    # case _:
-                    #     raise KeyError(f'Unknown property for {self.uuid}: {key}:{value}')
+
+                self._process_property_callback(key, value)

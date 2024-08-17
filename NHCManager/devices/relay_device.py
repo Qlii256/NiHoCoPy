@@ -12,6 +12,7 @@ class RelayDevice(Device):
         super().__init__(manager, uuid, model, online, name)
 
         self._location_id: str = ''
+
         self._channel: int = 0
 
         self.process_parameters(parameters)

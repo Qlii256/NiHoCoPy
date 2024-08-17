@@ -36,10 +36,7 @@ class MotorAction(Action):
         if position == self.position:
             return
 
-        self.manager.device_control(self.uuid,
-                                    {
-                                        'Position': str(position)
-                                    })
+        self.manager.device_control(self.uuid, {'Position': str(position)})
 
         # Force moving to True
         self._moving = True
@@ -58,10 +55,7 @@ class MotorAction(Action):
         return self._moving
 
     def open(self, blocking: bool = True):
-        self.manager.device_control(self.uuid,
-                                    {
-                                        'Action': 'Open'
-                                    })
+        self.manager.device_control(self.uuid, {'Action': 'Open'})
 
         # Force moving to True
         self._moving = True
@@ -76,10 +70,7 @@ class MotorAction(Action):
             self._moving = False
 
     def close(self, blocking: bool = True):
-        self.manager.device_control(self.uuid,
-                                    {
-                                        'Action': 'Close'
-                                    })
+        self.manager.device_control(self.uuid, {'Action': 'Close'})
 
         # Force moving to True
         self._moving = True
@@ -94,10 +85,7 @@ class MotorAction(Action):
             self._moving = False
 
     def stop(self, blocking: bool = True):
-        self.manager.device_control(self.uuid,
-                                    {
-                                        'Action': 'Stop'
-                                    })
+        self.manager.device_control(self.uuid, {'Action': 'Stop'})
 
         if blocking:
             # Wait for the device status changed event.
@@ -117,6 +105,6 @@ class MotorAction(Action):
                     case 'Position':
                         self._position = int(value)
                     case 'Moving':
-                        self._moving = True if value == 'True' else False
-                    # case _:
-                    #     raise KeyError(f'Unknown property for {self.uuid}: {key}:{value}')
+                        self._moving = True if value.lower() == 'true' else False
+
+                self._process_property_callback(key, value)

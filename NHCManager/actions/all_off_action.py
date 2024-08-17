@@ -11,6 +11,7 @@ class AllOffAction(Action):
         super().__init__(manager, uuid, name)
 
         self._status: bool = False
+        self._triggered: bool = False
         self._all_off_active: bool = False
         self._all_started: bool = False
 
@@ -20,11 +21,15 @@ class AllOffAction(Action):
     def status(self):
         return self._status
 
+    @property
+    def triggered(self):
+        return self._triggered
+
     def trigger(self):
         self.manager.device_control(self.uuid, {'BasicState': 'Triggered'})
 
         # Wait for the device status changed event.
-        while not self.status:
+        while not self.triggered:
             continue
 
     def process_properties(self, properties: typing.List[typing.Dict[str, str]]):
@@ -32,8 +37,11 @@ class AllOffAction(Action):
             for key, value in property.items():
                 match key:
                     case 'BasicState':
-                        self._status = True if value in ['On', 'Triggered'] else False
+                        self._status = True if value.lower() == 'on' else False
+                        self._triggered = True if value.lower() == 'triggered' else False
                     case 'AllOffActive':
-                        self._all_off_active = True if value == 'True' else False
+                        self._all_off_active = True if value.lower() == 'true' else False
                     case 'AllStarted':
-                        self._all_started = True if value == 'True' else False
+                        self._all_started = True if value.lower() == 'true' else False
+
+                self._process_property_callback(key, value)

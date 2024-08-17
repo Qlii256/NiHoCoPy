@@ -11,6 +11,7 @@ class GenericAction(Action):
         super().__init__(manager, uuid, name)
 
         self._status: bool = False
+        self._triggered: bool = False
         self._start_text: str = ''
         self._stop_text: str = ''
         self._start_active: bool = False
@@ -21,6 +22,10 @@ class GenericAction(Action):
     @property
     def status(self):
         return self._status
+
+    @property
+    def triggered(self):
+        return self._triggered
 
     @property
     def start_text(self):
@@ -39,11 +44,10 @@ class GenericAction(Action):
         return self._all_started
 
     def trigger(self):
-        old_status = self.status
         self.manager.device_control(self.uuid, {'BasicState': 'Triggered'})
 
         # Wait for the device status changed event.
-        while self.status == old_status:
+        while not self.triggered:
             continue
 
     def process_properties(self, properties: typing.List[typing.Dict[str, str]]):
@@ -51,12 +55,15 @@ class GenericAction(Action):
             for key, value in property.items():
                 match key:
                     case 'BasicState':
-                        self._status = True if value == 'On' else False
+                        self._status = True if value.lower() == 'on' else False
+                        self._triggered = True if value.lower() == 'triggered' else False
                     case 'StartText':
                         self._start_text = value
                     case 'StopText':
                         self._stop_text = value
                     case 'StartActive':
-                        self._start_active = True if value == 'True' else False
+                        self._start_active = True if value.lower() == 'true' else False
                     case 'AllStarted':
-                        self._all_started = True if value == 'True' else False
+                        self._all_started = True if value.lower() == 'true' else False
+
+                self._process_property_callback(key, value)

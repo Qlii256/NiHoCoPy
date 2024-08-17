@@ -60,3 +60,6 @@ class PanelDevice(Device):
                         self.buttons[int(s[-1:]) - 1]._long_press_time = int(value.rsplit('.')[0])
                     case s if s.startswith('ButtonMode'):
                         self.buttons[int(s[-1:]) - 1]._button_mode = value
+
+    def __repr__(self):
+        return f'{super().__repr__()[:-1]} buttons={self.buttons}>'

@@ -17,6 +17,7 @@ class MotorDevice(Device):
             'rolldownshutter', 'sunblind', 'gate', 'venetianblind'] = 'venetianblind'
         self._open_run_time: int = 0
         self._close_run_time: int = 0
+
         self._channel: int = 0
 
         self.process_parameters(parameters)

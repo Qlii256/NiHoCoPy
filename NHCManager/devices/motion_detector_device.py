@@ -38,7 +38,7 @@ class MotionDetectorDevice(Device):
                     case 'MotionSensitivity':
                         self._motion_sensitivity = value
                     case 'OverruleFeedbackLed':
-                        self._overrule_feedback_led = True if value == 'Enabled' else False
+                        self._overrule_feedback_led = True if value.lower() == 'enabled' else False
 
     def __repr__(self):
         return f'{super().__repr__()[:-1]} motion-sensitivity={self.motion_sensitivity}>'

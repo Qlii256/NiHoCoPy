@@ -78,8 +78,8 @@ class BellButtonAction(Action):
             for key, value in property.items():
                 match key:
                     case 'BasicState':
-                        self._triggered = True if value.lower() == 'triggered' else False
                         self._status = True if value.lower() == 'on' else False
+                        self._triggered = True if value.lower() == 'triggered' else False
                     case 'Doorlock':
                         self._door_lock = True if value.lower() == 'open' else False
                     case 'CallPending':

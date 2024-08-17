@@ -46,7 +46,7 @@ class VirtualDevice(Device):
             for key, value in property.items():
                 match key:
                     case 'Status':
-                        self._status = True if value == 'True' else False
+                        self._status = True if value.lower() == 'true' else False
 
     def __repr__(self):
         return f'{super().__repr__()[:-1]} status={self.status}>'

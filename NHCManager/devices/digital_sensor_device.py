@@ -13,6 +13,7 @@ class DigitalSensorDevice(Device):
 
         self._location_id: str = ''
         self._inverted: bool = False
+
         self._channel: int = 0
 
         self.process_parameters(parameters)
@@ -37,7 +38,7 @@ class DigitalSensorDevice(Device):
                     case 'LocationId':
                         self._location_id = value
                     case 'Inverted':
-                        self._inverted = True if value == 'True' else False
+                        self._inverted = True if value.lower() == 'true' else False
 
     def process_traits(self, traits: typing.List[typing.Dict[str, str]]):
         for trait in traits:

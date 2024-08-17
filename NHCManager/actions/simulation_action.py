@@ -11,6 +11,7 @@ class SimulationAction(Action):
         super().__init__(manager, uuid, name)
 
         self._status: bool = False
+        self._triggered: bool = False
 
         self.process_properties(properties)
 
@@ -18,12 +19,15 @@ class SimulationAction(Action):
     def status(self):
         return self._status
 
+    @property
+    def triggered(self):
+        return self._triggered
+
     def trigger(self):
-        old_status = self.status
         self.manager.device_control(self.uuid, {'BasicState': 'Triggered'})
 
         # Wait for the device status changed event.
-        while self.status == old_status:
+        while self.triggered:
             continue
 
     def process_properties(self, properties: typing.List[typing.Dict[str, str]]):
@@ -31,4 +35,7 @@ class SimulationAction(Action):
             for key, value in property.items():
                 match key:
                     case 'BasicState':
-                        self._status = True if value == 'On' else False
+                        self._status = True if value.lower() == 'on' else False
+                        self._triggered = True if value.lower() == 'triggered' else False
+
+                self._process_property_callback(key, value)
