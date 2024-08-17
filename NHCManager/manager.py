@@ -41,6 +41,7 @@ class Manager:
         _devices = []
         for device in devices:
             if device['Type'] == 'action':
+                # print(device)
                 action = None
                 match device['Model']:
                     case 'rolldownshutter' | 'sunblind' | 'gate' | 'venetianblind':
@@ -96,6 +97,13 @@ class Manager:
                             manager=self,
                             uuid=device['Uuid'],
                             name=device['Name'],
+                            properties=device['Properties'])
+                    case 'bellbutton':
+                        action = BellButtonAction(
+                            manager=self,
+                            uuid=device['Uuid'],
+                            name=device['Name'],
+                            parameters=device['Parameters'],
                             properties=device['Properties'])
 
                 if action:
@@ -155,6 +163,7 @@ class Manager:
                             name=device['Name'],
                             parameters=device['Parameters'],
                             traits=device['Traits'])
+                        # print(device)
                 if _device:
                     _devices.append(_device)
 

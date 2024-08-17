@@ -8,3 +8,4 @@ from .generic_action import GenericAction
 from .simulation_action import SimulationAction
 from .all_off_action import AllOffAction
 from .switched_generic_action import SwitchedGenericAction
+from .bell_button_action import BellButtonAction
